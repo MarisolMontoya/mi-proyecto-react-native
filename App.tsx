@@ -1,6 +1,16 @@
 import { StatusBar } from 'expo-status-bar';
+import React, { useEffect, useState } from 'react';
+
 import { useProductos } from "./hooks/useProductos";
-import React from 'react';
+
+import {
+  crearTabla,
+  insertarProducto,
+  obtenerProductos,
+  actualizarProducto,
+  eliminarProducto
+} from "./database/database";
+
 
 import {
   StyleSheet,
@@ -9,6 +19,7 @@ import {
   Image,
   TouchableOpacity,
 } from 'react-native';
+
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -28,32 +39,40 @@ const titulado: boolean = false;
 /* =========================
    PANTALLA INICIO
 ========================= */
+
 function InicioScreen({ navigation }: any) {
 
-  // Obtiene productos, estado de carga y función para buscar artesanos
+
   const { productos, cargando, getArtesano } = useProductos();
 
+
   return (
+
     <View style={styles.container}>
+
+
       <Image
         source={require('./assets/ford.jpg')}
         style={styles.avatar}
       />
 
+
       <Text style={styles.titulo}>
         Bienvenida {nombre}
       </Text>
 
+
       <Text style={styles.subtitulo}>
         {carrera}
       </Text>
+
 
       <Text style={styles.descripcion}>
         Explora una experiencia moderna enfocada en tecnología,
         innovación y desarrollo móvil con React Native.
       </Text>
 
-      {/* PRODUCTOS */}
+
 
       {
         cargando ? (
@@ -61,37 +80,48 @@ function InicioScreen({ navigation }: any) {
           <Text style={styles.dato}>
             Cargando productos...
           </Text>
+
         ) : (
+
           productos.map(producto => (
+
             <View 
-              key={producto.id} 
+              key={producto.id}
               style={styles.card}
             >
+
               <Text style={styles.dato}>
                 Producto: {producto.nombre}
               </Text>
+
 
               <Text style={styles.dato}>
                 Artesano:
                 {getArtesano(producto.artesanoId)?.nombre}
               </Text>
 
+
             </View>
 
           ))
 
         )
-
       }
 
+
+
       <View style={styles.card}>
+
+
         <Text style={styles.dato}>
           Cuatrimestre: {cuatrimestre}
         </Text>
 
+
         <Text style={styles.dato}>
           Promedio: {promedio}
         </Text>
+
 
         <Text style={styles.dato}>
           Titulado: {String(titulado)}
@@ -100,7 +130,8 @@ function InicioScreen({ navigation }: any) {
 
       </View>
 
-      {/* MENÚ */}
+
+
 
       <TouchableOpacity
 
@@ -116,9 +147,12 @@ function InicioScreen({ navigation }: any) {
 
       </TouchableOpacity>
 
+
+
+
       <TouchableOpacity
 
-        style={[styles.boton, { marginTop: 15 }]}
+        style={[styles.boton,{marginTop:15}]}
 
         onPress={() => navigation.navigate('Hobbies')}
 
@@ -132,8 +166,23 @@ function InicioScreen({ navigation }: any) {
 
 
 
+      <TouchableOpacity
 
-      <StatusBar style="light" />
+        style={[styles.boton,{marginTop:15}]}
+
+        onPress={() => navigation.navigate('SQLite')}
+
+      >
+
+        <Text style={styles.textoBoton}>
+          Ir a SQLite
+        </Text>
+
+      </TouchableOpacity>
+
+
+
+      <StatusBar style="light"/>
 
 
     </View>
@@ -141,6 +190,8 @@ function InicioScreen({ navigation }: any) {
   );
 
 }
+
+
 
 
 
@@ -150,48 +201,54 @@ function InicioScreen({ navigation }: any) {
    PANTALLA PERFIL
 ========================= */
 
-function PerfilScreen() {
+function PerfilScreen(){
 
 
-  return (
+return(
 
-    <View style={styles.container}>
-
-
-      <Text style={styles.titulo}>
-        Pantalla de Perfil
-      </Text>
+<View style={styles.container}>
 
 
-
-      <Image
-        source={require('./assets/ford.jpg')}
-        style={styles.avatar}
-      />
+<Text style={styles.titulo}>
+Pantalla de Perfil
+</Text>
 
 
+<Image
 
-      <Text style={styles.dato}>
-        Nombre: {nombre}
-      </Text>
+source={require('./assets/ford.jpg')}
 
+style={styles.avatar}
 
-      <Text style={styles.dato}>
-        Carrera: {carrera}
-      </Text>
-
-
-      <Text style={styles.dato}>
-        Promedio: {promedio}
-      </Text>
+/>
 
 
 
-    </View>
+<Text style={styles.dato}>
+Nombre: {nombre}
+</Text>
 
-  );
+
+<Text style={styles.dato}>
+Carrera: {carrera}
+</Text>
+
+
+<Text style={styles.dato}>
+Promedio: {promedio}
+</Text>
+
+
+</View>
+
+
+);
+
 
 }
+
+
+
 
 
 
@@ -201,46 +258,218 @@ function PerfilScreen() {
    PANTALLA HOBBIES
 ========================= */
 
-function HobbiesScreen() {
+
+function HobbiesScreen(){
 
 
-  return (
+return(
 
-    <View style={styles.container}>
-
-
-      <Text style={styles.titulo}>
-        Mis Hobbies
-      </Text>
+<View style={styles.container}>
 
 
-
-      <Text style={styles.dato}>
-        🎮 Videojuegos
-      </Text>
-
-
-      <Text style={styles.dato}>
-        💻 Programación
-      </Text>
+<Text style={styles.titulo}>
+Mis Hobbies
+</Text>
 
 
-      <Text style={styles.dato}>
-        🎵 Música
-      </Text>
+<Text style={styles.dato}>
+🎮 Videojuegos
+</Text>
 
 
-      <Text style={styles.dato}>
-        🚗 Autos
-      </Text>
+<Text style={styles.dato}>
+💻 Programación
+</Text>
 
 
+<Text style={styles.dato}>
+🎵 Música
+</Text>
 
-    </View>
 
-  );
+<Text style={styles.dato}>
+🚗 Autos
+</Text>
+
+
+</View>
+
+
+);
+
 
 }
+
+
+
+
+
+
+
+
+/* =========================
+   PANTALLA SQLITE
+========================= */
+
+
+function SQLiteScreen(){
+
+
+const [productos,setProductos] = useState<any[]>([]);
+
+
+
+useEffect(()=>{
+
+
+crearTabla();
+
+cargarProductos();
+
+
+},[]);
+
+
+
+
+const cargarProductos = ()=>{
+
+
+const datos:any = obtenerProductos();
+
+setProductos(datos);
+
+
+};
+
+
+
+
+return(
+
+
+<View style={styles.container}>
+
+
+<Text style={styles.titulo}>
+SQLite Productos
+</Text>
+
+
+
+
+<TouchableOpacity
+
+style={styles.boton}
+
+onPress={()=>{
+
+insertarProducto();
+
+cargarProductos();
+
+}}
+
+>
+
+<Text style={styles.textoBoton}>
+Insertar
+</Text>
+
+
+</TouchableOpacity>
+
+
+
+
+
+<TouchableOpacity
+
+style={[styles.boton,{marginTop:15}]}
+
+onPress={()=>{
+
+actualizarProducto();
+
+cargarProductos();
+
+}}
+
+>
+
+<Text style={styles.textoBoton}>
+Actualizar
+</Text>
+
+
+</TouchableOpacity>
+
+
+
+
+
+<TouchableOpacity
+
+style={[styles.boton,{marginTop:15}]}
+
+onPress={()=>{
+
+eliminarProducto();
+
+cargarProductos();
+
+}}
+
+>
+
+<Text style={styles.textoBoton}>
+Eliminar
+</Text>
+
+
+</TouchableOpacity>
+
+
+
+
+
+{
+
+productos.map(producto=>(
+
+
+<View key={producto.id}>
+
+
+<Text style={styles.dato}>
+{producto.nombre}
+</Text>
+
+
+<Text style={styles.dato}>
+Artesano: {producto.artesano}
+</Text>
+
+
+</View>
+
+
+))
+
+
+}
+
+
+
+</View>
+
+
+);
+
+
+}
+
+
 
 
 
@@ -250,70 +479,60 @@ function HobbiesScreen() {
    APP PRINCIPAL
 ========================= */
 
-export default function App() {
+
+export default function App(){
 
 
-  return (
+return(
+
+<NavigationContainer>
 
 
-    <NavigationContainer>
+<Stack.Navigator>
 
 
-      <Stack.Navigator
+<Stack.Screen
 
-        screenOptions={{
+name="Inicio"
 
-          headerStyle: {
+component={InicioScreen}
 
-            backgroundColor: '#101820',
+/>
 
-          },
+<Stack.Screen
 
+name="Perfil"
 
-          headerTintColor: '#fff',
+component={PerfilScreen}
 
-        }}
+/>
 
-      >
+<Stack.Screen
 
+name="Hobbies"
 
-        <Stack.Screen
+component={HobbiesScreen}
 
-          name="Inicio"
-
-          component={InicioScreen}
-
-        />
+/>
 
 
+<Stack.Screen
 
-        <Stack.Screen
+name="SQLite"
 
-          name="Perfil"
+component={SQLiteScreen}
 
-          component={PerfilScreen}
-
-        />
-
+/>
 
 
-        <Stack.Screen
-
-          name="Hobbies"
-
-          component={HobbiesScreen}
-
-        />
+</Stack.Navigator>
 
 
-      </Stack.Navigator>
+</NavigationContainer>
 
 
+);
 
-    </NavigationContainer>
-
-
-  );
 
 }
 
@@ -322,137 +541,123 @@ export default function App() {
 
 
 
-/* =========================
-   ESTILOS
-========================= */
-
 
 const styles = StyleSheet.create({
 
 
-  container: {
+container: {
 
-    flex: 1,
+flex:1,
 
-    backgroundColor: '#101820',
+backgroundColor:'#101820',
 
-    alignItems: 'center',
+alignItems:'center',
 
-    justifyContent: 'center',
+justifyContent:'center',
 
-    padding: 20,
+padding:20,
 
-  },
+},
 
 
+avatar:{
 
-  avatar: {
+width:220,
 
-    width: 220,
+height:220,
 
-    height: 220,
+borderRadius:20,
 
-    borderRadius: 20,
+marginBottom:20,
 
-    marginBottom: 20,
+},
 
-  },
 
+titulo:{
 
+fontSize:30,
 
-  titulo: {
+fontWeight:'bold',
 
-    fontSize: 30,
+color:'#fff',
 
-    fontWeight: 'bold',
+marginBottom:10,
 
-    color: '#ffffff',
+},
 
-    marginBottom: 10,
 
-  },
+subtitulo:{
 
+fontSize:18,
 
+color:'#d1d1d1',
 
-  subtitulo: {
+marginBottom:15,
 
-    fontSize: 18,
+},
 
-    color: '#d1d1d1',
 
-    marginBottom: 15,
+descripcion:{
 
-  },
+fontSize:16,
 
+color:'#fff',
 
+textAlign:'center',
 
-  descripcion: {
+marginBottom:25,
 
-    fontSize: 16,
+},
 
-    color: '#f5f5f5',
 
-    textAlign: 'center',
+card:{
 
-    marginBottom: 25,
+backgroundColor:'#1e2a38',
 
-    lineHeight: 24,
+width:'100%',
 
-  },
+padding:20,
 
+borderRadius:15,
 
+marginBottom:20,
 
-  card: {
+},
 
-    backgroundColor: '#1e2a38',
 
-    width: '100%',
+dato:{
 
-    padding: 20,
+fontSize:20,
 
-    borderRadius: 15,
+color:'#fff',
 
-    marginBottom: 25,
+marginBottom:15,
 
-  },
+},
 
 
+boton:{
 
-  dato: {
+backgroundColor:'#ff9800',
 
-    fontSize: 20,
+paddingVertical:14,
 
-    color: '#ffffff',
+paddingHorizontal:35,
 
-    marginBottom: 15,
+borderRadius:15,
 
-  },
+},
 
 
+textoBoton:{
 
-  boton: {
+color:'#fff',
 
-    backgroundColor: '#ff9800',
+fontSize:18,
 
-    paddingVertical: 14,
+fontWeight:'bold',
 
-    paddingHorizontal: 35,
-
-    borderRadius: 15,
-
-  },
-
-
-
-  textoBoton: {
-
-    color: '#fff',
-
-    fontSize: 18,
-
-    fontWeight: 'bold',
-
-  },
+},
 
 
 });
